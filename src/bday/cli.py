@@ -1,5 +1,8 @@
 import click
+import json
+from pydantic.json import pydantic_encoder
 from bday.db import BdayDatabase
+
 
 @click.group()
 def main():
@@ -12,21 +15,26 @@ def main():
 @click.option("--month", required=True, help="birth month", type=int)
 @click.option("--year", required=False, default=None, help="birth year", type=int)
 def add(name, day, month, year):
-    """Add a birthday."""
+    """Add a birthday"""
     db = BdayDatabase("dev")
-    db.addItem(name=name, month=month, day=day, year=year)
+    bday = db.add_bday(name=name, month=month, day=day, year=year)
+    click.echo(bday.model_dump_json())
 
 @main.command()
 @click.option("--id", required=True, help="bday id", type=str)
-def get(id):
-    """Get a birthday by id."""
+@click.option("--day", required=True, help="birth day", type=int)
+@click.option("--month", required=True, help="birth month", type=int)
+def get(id, day, month):
+    """Get a birthday"""
     db = BdayDatabase("dev")
-    db.getItem(id=id)
+    bday = db.get_bday(id, day, month)
+    click.echo(bday.model_dump_json())
 
 @main.command()
-@click.option("--month", required=False, default=None, help="birth month", type=int)
 @click.option("--day", required=False, default=None, help="birth day", type=int)
-@click.option("--year", required=False, default=None, help="birth year", type=int)
-def ls(year, month, day):
-    """List birthdays."""
-    click.echo(f"Listing {year}-{month}-{day}")
+@click.option("--month", required=False, default=None, help="birth month", type=int)
+def ls(day, month):
+    """List birthdays"""
+    db = BdayDatabase("dev")
+    bdays = db.get_dt(day, month)
+    click.echo(json.dumps(bdays, default=pydantic_encoder))

@@ -16,12 +16,20 @@ poetry shell
 poetry install
 ```
 
-Manage birthdays
+CLI
 
 ```sh
-bday add [--year] --month --day --name
-bday rm "name"
-bday ls [--month] [--day]
+Usage: bday [OPTIONS] COMMAND [ARGS]...
+
+  bday cli
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  add  Add a birthday
+  get  Get a birthday
+  ls   List birthdays
 ```
 
 Infrastructure
@@ -46,17 +54,15 @@ terraform plan                          # view changes
 terraform apply                         # apply changes
 ```
 
-Database item example
+Database schema
 
-```json
-{
- "Id": "y8vVvHl4Iu",
- "BirthDt": "01:18",
- "BirthDay": 18,
- "BirthMonth": 1,
- "BirthYear": 1975,
- "CreatedAt": "2024-10-16T17:15:23.991353",
- "Name": "Leslie Knope",
- "UpdatedAt": "2024-10-16T17:15:23.991353"
-}
-```
+Key | Type | Description | Example
+---|---|---|---
+BirthDt | str | **Partition Key** combination of `{month}:{day}` with prefixed zeros, used for getting all birthdays on this day | `"01:18"`
+Id | str | **Sort Key** 10-character unique ID for a bday entry | `"y8vVvHl4Iu"`
+BirthDay | int | Day number (1-31) | `18`
+BirthMonth | int | Month number (1-12) | `1`
+BirthYear | int | Year number | `1975`
+Name | str | Person's name | `"Leslie Knope"`
+CreatedAt | str | Item created time, ISO format | `"2024-10-16T17:15:23.991353"`
+UpdatedAt | str | Item updated time, ISO format | `"2024-10-16T17:15:23.991353"`

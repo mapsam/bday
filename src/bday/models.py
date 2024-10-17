@@ -1,6 +1,7 @@
 import pydantic
 import nanoid
 from datetime import datetime
+from bday.util import build_dt
 
 class Bday(pydantic.BaseModel):
     Id: str = None
@@ -18,24 +19,14 @@ class Bday(pydantic.BaseModel):
     
     @pydantic.validator("BirthDt", pre=True, always=True)
     def default_dt(cls, v, *, values):
-        m = str(values["BirthMonth"]).zfill(2)
-        d = str(values["BirthDay"]).zfill(2)
-        return v or f"{m}:{d}"
+        dt = build_dt(day=values["BirthDay"], month=values["BirthMonth"])
+        return v or dt
 
     @pydantic.validator("CreatedAt", pre=True, always=True)
     def default_created(cls, v):
         return v or datetime.now().isoformat()
-    
-    # @pydantic.field_serializer("CreatedAt")
-    # def serialize_created(self, ts, _):
-    #     return datetime.now().isoformat()
-    
+        
     @pydantic.validator("UpdatedAt", pre=True, always=True)
     def default_modified(cls, v, *, values):
-        return v or values["CreatedAt"]
-
-    # @pydantic.field_serializer("UpdatedAt")
-    # def serialize_created(self, ts, _):
-    #     return datetime.now().isoformat()
-    
+        return v or values["CreatedAt"]    
     

@@ -16,15 +16,15 @@ provider "aws" {
 resource "aws_dynamodb_table" "bday" {
   name = "bday-${terraform.workspace}"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key = "Id"
-  range_key = "BirthDt"
+  hash_key = "BirthDt"
+  range_key = "Id"
 
-  attribute {
-    name = "Id"
-    type = "S"
-  }
   attribute {
     name = "BirthDt"
     type = "S" # MM:DD
+  }
+  attribute {
+    name = "Id"
+    type = "S"
   }
 }
