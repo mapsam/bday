@@ -25,6 +25,6 @@ resource "aws_dynamodb_table" "bday" {
   }
   attribute {
     name = "BirthDt"
-    type = "N" # MM-DD
+    type = "S" # MM:DD
   }
 }

@@ -45,3 +45,18 @@ terraform workspace select [dev|prod]   # select environment
 terraform plan                          # view changes
 terraform apply                         # apply changes
 ```
+
+Database item example
+
+```json
+{
+ "Id": "y8vVvHl4Iu",
+ "BirthDt": "01:18",
+ "BirthDay": 18,
+ "BirthMonth": 1,
+ "BirthYear": 1975,
+ "CreatedAt": "2024-10-16T17:15:23.991353",
+ "Name": "Leslie Knope",
+ "UpdatedAt": "2024-10-16T17:15:23.991353"
+}
+```
